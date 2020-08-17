@@ -1,6 +1,6 @@
 <template>
   <div>
-    我的
+    视频
   </div>
 </template>
 

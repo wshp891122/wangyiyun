@@ -26,3 +26,35 @@ export async function login(data) {
 export async function tuijian() {
   return await fetchData.get("/recommend/songs");
 }
+
+//获取歌曲详情
+export async function getSongDetail(id) {
+  return await fetchData.get("/song/detail", { params: { ids: id } });
+}
+
+//
+// 获取歌单详情
+// export async function getSongDetail() {
+//   let song_list = [];
+//   let result = await tuijian();
+
+//   for (var item of result.data.recommend) {
+//     //歌单对象
+//     let obj = {};
+//     // obj.content = [];
+//     //通过歌单id获取歌单详情
+//     let { data } = await fetchData.get("/playlist/detail", {
+//       params: { id: item.id },
+//     });
+//     //设置歌单名字
+//     obj.name = data.playlist.name;
+//     let ids = "";
+//     for (var item1 of data.playlist.tracks) {
+//       ids += "," + item1.id;
+//     }
+//     let song = await getSong(ids.substring(1));
+//     obj.songs = song.data.songs;
+//     song_list.push(obj);
+//   }
+//   return song_list;
+// }

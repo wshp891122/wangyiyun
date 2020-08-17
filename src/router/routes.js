@@ -55,7 +55,7 @@ export const routes = [
     },
   },
   {
-    path: "/playpage",
+    path: "/playpage/:id",
     component: PlayPage,
   },
   {

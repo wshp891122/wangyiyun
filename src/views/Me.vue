@@ -8,7 +8,7 @@ export default {
   methods: {},
   mounted() {
     console.log("me");
-  },
+  }
 
 };
 </script>

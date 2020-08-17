@@ -8,22 +8,23 @@ const fetchData = axios.create({
 //添加请求拦截器
 fetchData.interceptors.request.use(
   function(config) {
-    let user = JSON.parse(localStorage.getItem("user"));
-    let cookie = user ? user.cookie : null;
-    config.url = config.url + "?cookie=" + cookie;
+    //   let user = JSON.parse(localStorage.getItem("user"));
+    //   let cookie = user ? user.cookie : null;
+    //   config.url = config.url + "?cookie=" + cookie;
 
-    // if (config.method == "get") {
-    //   config.params = {
-    //     ...config.params,
-    //     cookie: JSON.parse(localStorage.getItem("user")).cookie
-    //     }
-    // }
-    // if (config.method == "post") {
-    //   config.data = {
-    //     ...config.data,
-    //     cookie: cookie: JSON.parse(localStorage.getItem("user")).cookie
-    //   }
-    // }
+    if (config.method == "get") {
+      config.params = {
+        ...config.params,
+        cookie: JSON.parse(localStorage.getItem("user")).cookie,
+      };
+    }
+
+    if (config.method == "post") {
+      config.data = {
+        ...config.data,
+        cookie: JSON.parse(localStorage.getItem("user")).cookie,
+      };
+    }
     return config;
   },
   function(error) {
