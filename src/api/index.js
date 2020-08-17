@@ -32,6 +32,11 @@ export async function getSongDetail(id) {
   return await fetchData.get("/song/detail", { params: { ids: id } });
 }
 
+//获取播放地址
+export async function getPlayUrl(id) {
+  return await fetchData.get("/song/url", { params: { id: id } });
+}
+
 //
 // 获取歌单详情
 // export async function getSongDetail() {
