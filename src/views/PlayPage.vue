@@ -1,16 +1,13 @@
 <template>
   <div class="box-wrapper">
-    <div
-      class="box"
-      :style="{
+    <div class="box" :style="{
         backgroundImage: 'url(' + imgurl + ')',
-      }"
-    ></div>
+      }"></div>
     <div class="box1">
       <div class="top">
         <i @click="$router.history.go(-1)">&lt;</i>
         <span v-if="song.code == 200">{{ song.songs[0].name }}</span>
-        <span> </span>
+        <span></span>
       </div>
 
       <div class="cover">
@@ -19,14 +16,20 @@
           v-if="isShowImg"
           :style="{ '-webkit-animation-play-state': is_play }"
           :src="imgurl"
-          alt=""
+          alt
         />
         <div
           @click="isShowImg = true"
           v-show="!isShowImg"
           class="lyric"
-          v-html="lyric"
-        ></div>
+          :style="{top:-heightCount*20 + 220 +'px'}"
+        >
+          <p
+            :style="{color:item==g  ? 'yellow':'#fff'}"
+            v-for="(item,i)  in lrcObj"
+            :key="i"
+          >{{item}}</p>
+        </div>
       </div>
 
       <div class="footer">
@@ -56,9 +59,7 @@
             :style="{ color: i == 0 ? 'red' : '#333' }"
             v-for="(item, i) in song_list"
             :key="i"
-          >
-            {{ item.name }}
-          </li>
+          >{{ item.name }}</li>
         </ul>
       </el-drawer>
     </div>
@@ -73,7 +74,7 @@ import {
   getLikeList,
   getLyric,
 } from "../api";
-
+import transLyric from "../untils/transLyric"
 export default {
   data() {
     return {
@@ -90,6 +91,9 @@ export default {
       is_like: true, // 是否显示喜欢按钮
       lyric: "",
       isShowImg: true,
+      lrcObj: {}, //转换完成的歌词对象
+      g: "", //当前播放的歌词
+      heightCount: 0,
     };
   },
   filters: {
@@ -104,19 +108,28 @@ export default {
   mounted() {
     let that = this;
 
-    this.$refs.play_audio.addEventListener("canplay", function() {
+    this.$refs.play_audio.addEventListener("canplay", function () {
       //设置监听，点击时获取时长
       var sc = parseInt(that.$refs.play_audio.duration);
       // console.log(sc);
       that.duration = sc;
     });
-    this.$refs.play_audio.addEventListener("timeupdate", function() {
+    this.$refs.play_audio.addEventListener("timeupdate", function () {
       //设置监听，点击时获取时长
       var sc = parseInt(that.$refs.play_audio.currentTime);
       // console.log(sc);
       that.currentTime = sc;
-      // that.currentCount = sc;
-      // currentTime;
+
+      let obj = that.lrcObj[Math.floor(sc)];
+      if (obj != undefined) {
+        that.g = obj;
+        //
+        that.heightCount = Object.keys(that.lrcObj).findIndex(item => item == sc)
+        console.log(that.heightCount, "height")
+
+      }
+      // console.log()
+
     });
     let id = this.$route.params.id;
     this.get_song_deail(id);
@@ -126,12 +139,9 @@ export default {
     getLyric(id).then((res) => {
       console.log(res, "歌词");
       this.lyric = res.data.lrc.lyric;
-      console.log(this.lyric);
-      let str = this.lyric
-        .replace(/\n/gi, "</p><p>")
-        .replace(/\[/gi, "<span>[")
-        .replace(/\]/gi, "]</span>");
-      this.lyric = "<p>" + str + "</p>";
+      this.lrcObj = transLyric(res.data.lrc.lyric)
+      console.log(this.lrcObj, "lyric")
+
     });
   },
   methods: {
@@ -200,7 +210,7 @@ export default {
       // console.log(result, "aaa");
     },
     //展示列表
-    show_list() {},
+    show_list() { },
     //切换歌曲
     async tabSong(id) {
       //关闭抽屉
@@ -221,6 +231,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cover {
+  position: relative;
+  transition: 1s;
+  .lyric {
+    position: absolute;
+    top: 220px;
+    p {
+      height: 20px;
+      line-height: 20px;
+    }
+  }
+}
 .play_time {
   display: flex;
   color: #fff;

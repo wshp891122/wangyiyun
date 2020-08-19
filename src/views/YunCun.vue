@@ -5,7 +5,7 @@
 <script>
 export default {
   mounted() {
-    console.log("yuncun")
+
   },
 };
 </script>

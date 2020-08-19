@@ -50,3 +50,18 @@ export async function getLikeList(id) {
 export async function getLyric(id) {
   return await fetchData.get("/lyric", { params: { id } });
 }
+
+// 10 获取全部视频
+export async function getVideo() {
+  return await fetchData.get("/video/timeline/all");
+}
+
+// 11 获取视频播放地址
+export async function getVideoSrc(id) {
+  return await fetchData.get("/video/url", { params: { id } });
+}
+
+//所有的 都可以用这个
+// async function request(url, data) {
+//   return await fetchData.get(url, { params: data });
+// }
