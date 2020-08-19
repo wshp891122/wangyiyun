@@ -1,11 +1,6 @@
 <template>
-  <div
-    class="box_wrapper"
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="50"
-  >
-    <div class="box">
+  <div class="box_wrapper" ref="box">
+    <div class="box" id="box1">
       <div v-show="i < count" v-for="(item, i) in yuncun_list" :key="item.id">
         <img :src="item.simpleResourceInfo.songCoverUrl" alt />
         <p>{{ item.content }}</p>
@@ -25,7 +20,7 @@ import { getYunCun } from "../api";
 export default {
   data() {
     return {
-      loading: false, // 是否触发滚动触底事件
+      loading: false,
       yuncun_list: [],
       count: 10,
     };
@@ -37,45 +32,37 @@ export default {
     });
 
     //加载更多
-    // this.$refs.box.onscroll = this.loadMore;
+    this.$refs.box.onscroll = this.loadMore;
     // this.$refs.box.addEventListener("scroll", this.loadMore, false);
+
     // 会触发多次
   },
   methods: {
     handleTopChange() {
       // console.log("zzzz");
     },
+
     loadMore() {
-      // 滚动到底的 修改状态  ---- 不出
-      this.loading = true;
-      setTimeout(() => {
-        //刷新
-        this.count += 10;
-        this.loading = false;
-      }, 3000);
+      // 获取滚动高度
+      let scrollTop = this.$refs.box.scrollTop;
+      // box高度  - 屏幕的高度
+      let heightDiff = box1.offsetHeight - this.$refs.box.offsetHeight;
+      //距离底部 触发距离
+      if (scrollTop + 50 >= heightDiff) {
+        //注销scroll
+        this.$refs.box.onscroll = null;
+        // console.log("ok");
+        setTimeout(() => {
+          //请求接口  ---
+          this.count += 10;
+          this.$refs.box.onscroll = this.loadMore;
+        }, 3000);
+      }
+
+      // console.log(box1.offsetHeight, "offerset");
+      // console.log(window.screen.height, "window");
+      // console.log(scrollTop, "scrollTop");
     },
-
-    // loadMore() {
-    //   // 获取滚动高度
-    //   let scrollTop = this.$refs.box.scrollTop;
-    //   // box高度  - 屏幕的高度
-    //   let heightDiff = box1.offsetHeight - this.$refs.box.offsetHeight;
-    //   //距离底部 触发距离
-    //   if (scrollTop + 50 >= heightDiff) {
-    //     //注销scroll  -- 拖拽
-    //     this.$refs.box.onscroll = null; //
-    //     // console.log("ok");
-    //     setTimeout(() => {
-    //       //请求接口  ---
-    //       this.count += 10;
-    //       this.$refs.box.onscroll = this.loadMore;
-    //     }, 3000);
-    //   }
-
-    //   // console.log(box1.offsetHeight, "offerset");
-    //   // console.log(window.screen.height, "window");
-    //   // console.log(scrollTop, "scrollTop");
-    // },
   },
 };
 </script>
@@ -90,7 +77,7 @@ export default {
   padding: 10px 5px;
 
   > div {
-    margin-bottom: 20px;
+    margin-top: 20px;
     border-radius: 6px;
     break-inside: avoid;
     box-shadow: 1px 1px 1px 1px #f1f1f1;

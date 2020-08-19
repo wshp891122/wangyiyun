@@ -61,6 +61,46 @@ export async function getVideoSrc(id) {
   return await fetchData.get("/video/url", { params: { id } });
 }
 
+// 12 获视频分类标签
+export async function getVideType() {
+  return await fetchData.get("/video/group/list");
+}
+
+// 13获取分类标签下视频
+
+export async function getVideoByType(id) {
+  return await fetchData.get("/video/group", { params: { id: 58100 } });
+}
+
+// 14 资源点赞接口
+export async function parsie(id, type = 5, t = 1) {
+  return await fetchData.get("/resource/like", {
+    params: {
+      id,
+      type,
+      t,
+    },
+  });
+}
+
+// 15获取点赞信息
+
+export async function getParsieInfo(vid) {
+  return await fetchData.get("/video/detail/info", { params: { vid } });
+}
+
+// 15获取云村接口
+
+export async function getYunCun() {
+  return await fetchData.post("/comment/hotwall/list");
+}
+
+// getVideoByType().then((res) => {
+//   console.log(res, "typeVideo");
+// });
+// getVideType().then((res) => {
+//   console.log(res);
+// });
 //所有的 都可以用这个
 // async function request(url, data) {
 //   return await fetchData.get(url, { params: data });
