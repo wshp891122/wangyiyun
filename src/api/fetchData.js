@@ -15,6 +15,7 @@ fetchData.interceptors.request.use(
     if (config.method == "get") {
       config.params = {
         ...config.params,
+        timestamp: Date.now(),
         cookie: JSON.parse(localStorage.getItem("user")).cookie,
       };
     }
@@ -22,6 +23,7 @@ fetchData.interceptors.request.use(
     if (config.method == "post") {
       config.data = {
         ...config.data,
+        timestamp: Date.now(),
         cookie: JSON.parse(localStorage.getItem("user")).cookie,
       };
     }

@@ -5,7 +5,7 @@
     </div>
     <ul>
       <li><router-link activeClass="active" to="/me">我的</router-link></li>
-      <li><router-link activeClass="active" to="/font">发现</router-link></li>
+      <li><router-link activeClass="active" exact to="/">发现</router-link></li>
       <li><router-link activeClass="active" to="/yuncun">云村</router-link></li>
       <li>
         <router-link activeClass="active" to="/audiopage">视频</router-link>

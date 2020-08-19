@@ -22,44 +22,31 @@ export async function login(data) {
   return await fetchData.post("/login/cellphone", data);
 }
 
-// 精品推荐   ---
+// 4精品推荐   ---
 export async function tuijian() {
   return await fetchData.get("/recommend/songs");
 }
 
-//获取歌曲详情
+// 5获取歌曲详情
 export async function getSongDetail(id) {
   return await fetchData.get("/song/detail", { params: { ids: id } });
 }
 
-//获取播放地址
+// 6获取播放地址
 export async function getPlayUrl(id) {
   return await fetchData.get("/song/url", { params: { id: id } });
 }
+// 7 设置喜欢不喜欢
+export async function setLike(id, like = true) {
+  return await fetchData.get("/like", { params: { id, like } });
+}
 
-//
-// 获取歌单详情
-// export async function getSongDetail() {
-//   let song_list = [];
-//   let result = await tuijian();
+// 8 获取用户喜欢列表
+export async function getLikeList(id) {
+  return await fetchData.get("/likelist", { params: { id } });
+}
 
-//   for (var item of result.data.recommend) {
-//     //歌单对象
-//     let obj = {};
-//     // obj.content = [];
-//     //通过歌单id获取歌单详情
-//     let { data } = await fetchData.get("/playlist/detail", {
-//       params: { id: item.id },
-//     });
-//     //设置歌单名字
-//     obj.name = data.playlist.name;
-//     let ids = "";
-//     for (var item1 of data.playlist.tracks) {
-//       ids += "," + item1.id;
-//     }
-//     let song = await getSong(ids.substring(1));
-//     obj.songs = song.data.songs;
-//     song_list.push(obj);
-//   }
-//   return song_list;
-// }
+// 9获取歌词
+export async function getLyric(id) {
+  return await fetchData.get("/lyric", { params: { id } });
+}

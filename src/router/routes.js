@@ -13,7 +13,7 @@ export const routes = [
     component: Login,
   },
   {
-    path: "/font",
+    path: "/",
     // beforeEnter: (to, from, next) => {
     //   // ...
     //   console.log("OK---beforeEnter");
